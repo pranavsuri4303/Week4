@@ -32,7 +32,6 @@ public class SmartStrategy implements Strategy {
         List<? extends Move> validMoves = game.getValidMoves();
 
         for (Move move : validMoves) {
-            // Polymorphism in action: we don't care if it's TicTacToe or Chess
             Game copy = game.deepCopy();
             copy.doMove(move);
 
