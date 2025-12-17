@@ -6,8 +6,8 @@ import java.util.Objects;
  * A move in the Tic Tac Toe game.
  */
 public class TicTacToeMove implements Move {
-    private Mark mark;
-    private int index;
+    private final Mark mark;
+    private final int index;
 
     public TicTacToeMove(Mark mark, int index) {
         this.mark = mark;

@@ -72,5 +72,5 @@ public interface Calculator {
      *
      * @throws StackEmptyException if the stack does not have at least two values
      */
-    void mod() throws StackEmptyException;
+    void mod() throws DivideByZeroException, StackEmptyException;
 }

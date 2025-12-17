@@ -77,12 +77,16 @@ public class CalculatorImpl implements Calculator {
     }
 
     @Override
-    public void mod() throws StackEmptyException {
+    public void mod() throws DivideByZeroException, StackEmptyException {
         if (stack.size() < 2) {
             throw new StackEmptyException("Not enough elements on the stack for mod operation.");
         }
         double a = stack.pop();
         double b = stack.pop();
+        if (a == 0) {
+            stack.push(Double.NaN);
+            throw new DivideByZeroException("Division by zero.");
+        }
         stack.push(b % a);
     }
 }
