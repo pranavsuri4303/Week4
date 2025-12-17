@@ -54,4 +54,15 @@ public interface Game {
      */
     //@ requires isValidMove(move);
     void doMove(Move move);
+
+    /**
+     * Creates a deep copy of the game state.
+     * This is useful for AI strategies that need to simulate moves.
+     * @return a deep copy of the current game
+     */
+    /*@ ensures \result != this;
+        ensures \result.getClass() == this.getClass();
+     @*/
+    //@ pure;
+    Game deepCopy();
 }
