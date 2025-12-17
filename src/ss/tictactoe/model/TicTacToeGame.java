@@ -24,6 +24,21 @@ public class TicTacToeGame implements Game {
         this.current = player1;
     }
 
+    /**
+     * Creates a deep copy of the game.
+     * @return a new TicTacToeGame with the same state
+     */
+    /*@ ensures \result != this;
+        ensures \result instanceof TicTacToeGame;
+     @*/
+    public TicTacToeGame deepCopy() {
+        TicTacToeGame copy = new TicTacToeGame(this.player1, this.player2);
+        // Overwrite the empty board created by constructor with a deep copy of the current board
+        copy.board = this.board.deepCopy();
+        copy.current = this.current;
+        return copy;
+    }
+
     @Override
     public boolean isGameover() {
         return board.gameOver();
