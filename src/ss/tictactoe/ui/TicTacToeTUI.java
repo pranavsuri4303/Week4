@@ -2,6 +2,8 @@ package ss.tictactoe.ui;
 
 import ss.tictactoe.ai.ComputerPlayer;
 import ss.tictactoe.ai.NaiveStrategy;
+import ss.tictactoe.ai.SmartStrategy;
+import ss.tictactoe.ai.Strategy;
 import ss.tictactoe.model.*;
 
 import java.util.Scanner;
@@ -19,31 +21,9 @@ public class TicTacToeTUI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Tic Tac Toe!");
 
-        // Setup Player 1
-        Player p1;
-        boolean p1IsComputer = getBooleanInput(scanner, "Is Player 1 a computer? (y/n): ");
-
-        if (p1IsComputer) {
-            // Player 1 uses Mark.XX
-            p1 = new ComputerPlayer(Mark.XX, new NaiveStrategy());
-        } else {
-            System.out.print("Enter name for Player 1: ");
-            String name1 = scanner.next();
-            p1 = new HumanPlayer(name1, scanner);
-        }
-
-        // Setup Player 2
-        Player p2;
-        boolean p2IsComputer = getBooleanInput(scanner, "Is Player 2 a computer? (y/n): ");
-
-        if (p2IsComputer) {
-            // Player 2 uses Mark.OO
-            p2 = new ComputerPlayer(Mark.OO, new NaiveStrategy());
-        } else {
-            System.out.print("Enter name for Player 2: ");
-            String name2 = scanner.next();
-            p2 = new HumanPlayer(name2, scanner);
-        }
+        // Setup Player 1 and Player 2 using the helper method
+        Player p1 = setupPlayer(scanner, "Player 1", Mark.XX);
+        Player p2 = setupPlayer(scanner, "Player 2", Mark.OO);
 
         boolean play = true;
         while (play) {
@@ -66,18 +46,45 @@ public class TicTacToeTUI {
                 System.out.println("Draw!");
             }
 
-            // Use the helper method for the replay option as well
             play = getBooleanInput(scanner, "Play another game? (y/n): ");
         }
         System.out.println("Goodbye!");
     }
 
     /**
+     * Helper method to setup a player (Human or Computer).
+     */
+    private Player setupPlayer(Scanner scanner, String promptName, Mark mark) {
+        boolean isComputer = getBooleanInput(scanner, "Is " + promptName + " a computer? (y/n): ");
+        if (isComputer) {
+            Strategy strategy = getStrategyFromInput(scanner);
+            return new ComputerPlayer(mark, strategy);
+        } else {
+            System.out.print("Enter name for " + promptName + ": ");
+            String name = scanner.next();
+            return new HumanPlayer(name, scanner);
+        }
+    }
+
+    /**
+     * Helper method to get the strategy choice from the user.
+     */
+    private Strategy getStrategyFromInput(Scanner scanner) {
+        while (true) {
+            System.out.print("Select strategy (Naive/Smart): ");
+            String input = scanner.next();
+            if (input.equalsIgnoreCase("Naive")) {
+                return new NaiveStrategy();
+            } else if (input.equalsIgnoreCase("Smart")) {
+                return new SmartStrategy();
+            } else {
+                System.out.println("Invalid strategy. Please enter 'Naive' or 'Smart'.");
+            }
+        }
+    }
+
+    /**
      * Helper method to ensure the user enters 'y' or 'n'.
-     * loops until valid input is received.
-     * * @param scanner the scanner to read from
-     * @param prompt  the message to display to the user
-     * @return true if user entered 'y', false if 'n'
      */
     private boolean getBooleanInput(Scanner scanner, String prompt) {
         while (true) {
